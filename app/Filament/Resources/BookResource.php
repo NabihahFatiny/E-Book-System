@@ -3,15 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookResource\Pages;
-use App\Filament\Resources\BookResource\RelationManagers;
 use App\Models\Book;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 
 class BookResource extends Resource
 {
@@ -27,7 +27,37 @@ class BookResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\FileUpload::make('cover_image')
+                    ->label('Book Picture')
+                    ->image()
+                    ->directory('book-covers'),
+
+                Forms\Components\TextInput::make('title')
+                    ->label('Book Title')
+                    ->required()
+                    ->maxLength(255),
+
+                Forms\Components\TextInput::make('publisher')
+                    ->label('Publisher')
+                    ->maxLength(255),
+
+                Forms\Components\TextInput::make('isbn')
+                    ->label('ISBN')
+                    ->maxLength(255),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Description')
+                    ->rows(5)
+                    ->columnSpanFull(),
+
+                Forms\Components\Select::make('status')
+                    ->label('Status')
+                    ->options([
+                        'available' => 'Available',
+                        'borrowed' => 'Borrowed',
+                    ])
+                    ->default('available')
+                    ->required(),
             ]);
     }
 
@@ -35,18 +65,58 @@ class BookResource extends Resource
     {
         return $table
             ->columns([
-                //
-            ])
-            ->filters([
-                //
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->label('Book Picture'),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Book Title')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('publisher')
+                    ->label('Publisher')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('isbn')
+                    ->label('ISBN')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->label('Status'),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
+    }
+
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\ImageEntry::make('cover_image')
+                    ->label('Book Picture'),
+
+                Infolists\Components\TextEntry::make('title')
+                    ->label('Book Title'),
+
+                Infolists\Components\TextEntry::make('publisher')
+                    ->label('Publisher'),
+
+                Infolists\Components\TextEntry::make('isbn')
+                    ->label('ISBN'),
+
+                Infolists\Components\TextEntry::make('description')
+                    ->label('Description')
+                    ->columnSpanFull(),
+
+                Infolists\Components\TextEntry::make('status')
+                    ->label('Status'),
             ]);
     }
 
@@ -63,6 +133,7 @@ class BookResource extends Resource
             'index' => Pages\ListBooks::route('/'),
             'create' => Pages\CreateBook::route('/create'),
             'edit' => Pages\EditBook::route('/{record}/edit'),
+            'view' => Pages\ViewBook::route('/{record}'),
         ];
     }
 }
