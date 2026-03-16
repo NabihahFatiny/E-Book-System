@@ -30,7 +30,8 @@ class BookResource extends Resource
                 Forms\Components\FileUpload::make('cover_image')
                     ->label('Book Picture')
                     ->image()
-                    ->directory('book-covers'),
+                    ->directory('book-covers')
+                    ->disk('public'),
 
                 Forms\Components\TextInput::make('title')
                     ->label('Book Title')
@@ -66,7 +67,8 @@ class BookResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('cover_image')
-                    ->label('Book Picture'),
+                    ->label('Book Picture')
+                    ->disk('public'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Book Title')
@@ -100,7 +102,8 @@ class BookResource extends Resource
         return $infolist
             ->schema([
                 Infolists\Components\ImageEntry::make('cover_image')
-                    ->label('Book Picture'),
+                    ->label('Book Picture')
+                    ->disk('public'),
 
                 Infolists\Components\TextEntry::make('title')
                     ->label('Book Title'),
