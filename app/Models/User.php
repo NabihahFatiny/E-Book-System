@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'contact_no',
         'ic_passport',
+        'role',
         'password',
     ];
 
