@@ -19,6 +19,12 @@ class UserResource extends Resource
     protected static ?string $navigationLabel = 'Users';
     protected static ?int $navigationSort = 1;
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->where('role', 'user');
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form
