@@ -36,16 +36,16 @@
                     <h2 class="font-semibold text-lg line-clamp-2">{{ $book->title }}</h2>
 
                     @if($book->author)
-                        <p class="text-sm text-gray-700 mt-1">{{ $book->author }}</p>
-                    @endif
+    <p class="text-sm text-gray-700 mt-1">{{ $book->author->name }}</p>
+@endif
 
-                    @if($book->publisher)
-                        <p class="text-sm text-gray-600">{{ $book->publisher }}</p>
-                    @endif
+@if($book->publisher)
+    <p class="text-sm text-gray-600">{{ $book->publisher->name }}</p>
+@endif
 
-                    @if($book->category)
-                        <p class="text-sm text-gray-500">{{ $book->category }}</p>
-                    @endif
+@if($book->category)
+    <p class="text-sm text-gray-500">{{ $book->category->name }}</p>
+@endif
 
                     <div class="mt-3">
                         @if($book->status === 'available')

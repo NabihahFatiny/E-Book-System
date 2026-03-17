@@ -11,13 +11,19 @@ class UserDashboardController extends Controller
     {
         $search = $request->search;
 
-        $books = Book::query()
+        $books = Book::with(['author', 'publisher', 'category'])
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('author', 'like', '%' . $search . '%')
-                    ->orWhere('publisher', 'like', '%' . $search . '%')
                     ->orWhere('isbn', 'like', '%' . $search . '%')
-                    ->orWhere('category', 'like', '%' . $search . '%');
+                    ->orWhereHas('author', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('publisher', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
             })
             ->latest()
             ->get();
