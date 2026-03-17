@@ -34,6 +34,9 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
 
+                Forms\Components\Hidden::make('name')
+                    ->dehydrateStateUsing(fn($get) => $get('username')),
+
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->email()

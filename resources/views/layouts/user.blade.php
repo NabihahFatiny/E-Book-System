@@ -22,6 +22,13 @@
                    class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.borrowings') ? 'bg-slate-700' : '' }}">
                     My Borrowings
                 </a>
+    <form method="POST" action="{{ route('logout') }}" class="mt-6">
+    @csrf
+    <button type="submit"
+        class="block w-full rounded-lg px-4 py-3 text-left text-white hover:bg-slate-700">
+        Logout
+    </button>
+</form>
             </nav>
         </aside>
 

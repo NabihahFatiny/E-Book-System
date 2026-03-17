@@ -38,8 +38,16 @@ class BookResource extends Resource
                     ->required()
                     ->maxLength(255),
 
+                Forms\Components\TextInput::make('author')
+                    ->label('Author')
+                    ->maxLength(255),
+
                 Forms\Components\TextInput::make('publisher')
                     ->label('Publisher')
+                    ->maxLength(255),
+
+                Forms\Components\TextInput::make('category')
+                    ->label('Category')
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('isbn')
@@ -74,8 +82,16 @@ class BookResource extends Resource
                     ->label('Book Title')
                     ->searchable(),
 
+                Tables\Columns\TextColumn::make('author')
+                    ->label('Author')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('publisher')
                     ->label('Publisher')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('category')
+                    ->label('Category')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('isbn')
@@ -108,8 +124,15 @@ class BookResource extends Resource
                 Infolists\Components\TextEntry::make('title')
                     ->label('Book Title'),
 
+                Infolists\Components\TextEntry::make('author')
+                    ->label('Author'),
+
+
                 Infolists\Components\TextEntry::make('publisher')
                     ->label('Publisher'),
+
+                Infolists\Components\TextEntry::make('category')
+                    ->label('Category'),
 
                 Infolists\Components\TextEntry::make('isbn')
                     ->label('ISBN'),
