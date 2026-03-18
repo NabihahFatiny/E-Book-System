@@ -30,72 +30,35 @@ class BookResource extends Resource
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('cover_image')
-                    ->label('Book Picture')
                     ->image()
-                    ->directory('book-covers')
-                    ->disk('public'),
-
+                    ->directory('book-covers'),
                 Forms\Components\TextInput::make('title')
-                    ->label('Book Title')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
 
+                // This creates the dropdown linked to your Author table
                 Forms\Components\Select::make('author_id')
-                    ->label('Author')
-                    ->relationship('author', 'name')
+                    ->relationship('author', 'name') // 'author' is the model relation, 'name' is the column to show
                     ->searchable()
                     ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Author Name')
-                            ->required()
-                            ->maxLength(255),
-                    ])
                     ->required(),
 
                 Forms\Components\Select::make('publisher_id')
-                    ->label('Publisher')
                     ->relationship('publisher', 'name')
                     ->searchable()
                     ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Publisher Name')
-                            ->required()
-                            ->maxLength(255),
-                    ])
                     ->required(),
 
                 Forms\Components\Select::make('category_id')
-                    ->label('Category')
                     ->relationship('category', 'name')
                     ->searchable()
                     ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Category Name')
-                            ->required()
-                            ->maxLength(255),
-                    ])
                     ->required(),
 
-                Forms\Components\TextInput::make('isbn')
-                    ->label('ISBN')
-                    ->maxLength(255),
-
-                Forms\Components\Textarea::make('description')
-                    ->label('Description')
-                    ->rows(5)
-                    ->columnSpanFull(),
-
+                Forms\Components\TextInput::make('isbn'),
+                Forms\Components\Textarea::make('description')->columnSpanFull(),
                 Forms\Components\Select::make('status')
-                    ->label('Status')
-                    ->options([
-                        'available' => 'Available',
-                        'borrowed' => 'Borrowed',
-                    ])
-                    ->default('available')
-                    ->required(),
+                    ->options(['available' => 'Available', 'borrowed' => 'Borrowed'])
+                    ->default('available'),
             ]);
     }
 
@@ -177,9 +140,7 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AuthorRelationManager::class,
-            RelationManagers\PublisherRelationManager::class,
-            RelationManagers\CategoryRelationManager::class,
+            // Remove the classes from here to stop the "save()" error
         ];
     }
 

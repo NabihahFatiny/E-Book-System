@@ -17,7 +17,8 @@ class PublisherResource extends Resource
 {
     protected static ?string $model = Publisher::class;
 
-    protected static bool $shouldRegisterNavigation = false;
+
+    protected static ?string $navigationGroup = 'Settings';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
