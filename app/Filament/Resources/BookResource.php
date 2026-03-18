@@ -140,7 +140,9 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Remove the classes from here to stop the "save()" error
+            RelationManagers\AuthorRelationManager::class,
+            RelationManagers\PublisherRelationManager::class,
+            RelationManagers\CategoryRelationManager::class,
         ];
     }
 
