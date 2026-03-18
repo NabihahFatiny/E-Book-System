@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 
+use App\Filament\Resources\BookResource\RelationManagers;
+
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
@@ -175,7 +177,9 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\AuthorRelationManager::class,
+            RelationManagers\PublisherRelationManager::class,
+            RelationManagers\CategoryRelationManager::class,
         ];
     }
 
