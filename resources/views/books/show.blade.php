@@ -2,107 +2,94 @@
 
 @section('content')
     <div class="mb-6">
-        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">
+        <a href="{{ route('dashboard') }}" class="flex items-center text-sm font-medium text-slate-500 hover:text-orange-600 transition-colors">
+            <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
             Back to dashboard
         </a>
     </div>
 
-    <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-        <div class="grid gap-8 p-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+    <div class="max-w-5xl overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
+        <div class="grid gap-10 p-8 lg:grid-cols-[240px_1fr]">
+
             <div>
-                <div class="overflow-hidden rounded-2xl bg-gradient-to-br from-orange-300 via-orange-500 to-orange-700 p-4 text-white shadow-sm">
-                    <div class="aspect-[3/4] overflow-hidden rounded-xl bg-white/10">
-                        @if($book->cover_image)
-                            <img
-                                src="{{ asset('storage/' . $book->cover_image) }}"
-                                alt="{{ $book->title }}"
-                                class="h-full w-full object-cover"
-                            >
-                        @else
-                            <div class="flex h-full items-center justify-center px-6 text-center">
-                                <div>
-                                    <p class="text-sm uppercase tracking-[0.3em] text-white/70">Novel</p>
-                                    <p class="mt-4 text-3xl font-bold leading-tight">{{ $book->title }}</p>
-                                    @if($book->authors->isNotEmpty())
-                                        <p class="mt-6 text-sm text-white/80">
-                                            {{ $book->authors->pluck('name')->join(' - ') }}
-                                        </p>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
-                    </div>
+                <div class="relative aspect-[3/4] overflow-hidden rounded-2xl bg-orange-100 shadow-md">
+                    @if($book->cover_image)
+                        <img
+                            src="{{ asset('storage/' . $book->cover_image) }}"
+                            alt="{{ $book->title }}"
+                            class="h-full w-full object-cover"
+                        >
+                    @else
+                        <div class="flex h-full items-center justify-center bg-gradient-to-br from-orange-400 to-orange-600 p-6 text-center text-white">
+                            <span class="text-xl font-bold italic">{{ $book->title }}</span>
+                        </div>
+                    @endif
                 </div>
 
-                <button
-                    type="button"
-                    class="mt-5 w-full rounded-2xl bg-orange-600 px-6 py-4 text-lg font-semibold text-white hover:bg-orange-700"
-                >
+                <button type="button" class="mt-6 w-full rounded-xl bg-[#E85D33] px-6 py-3 text-lg font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 active:scale-95">
                     Read
                 </button>
             </div>
 
-            <div>
-                <div class="flex flex-wrap items-center gap-4">
-                    <h1 class="text-4xl font-bold text-slate-900">{{ $book->title }}</h1>
+            <div class="flex flex-col">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-3xl font-extrabold text-slate-800">{{ $book->title }}</h1>
 
-                    <div class="flex items-center gap-3 text-2xl text-slate-600">
-                        <span>&mdash;</span>
+                    <span class="text-slate-300 text-2xl">—</span>
 
-                        @if($book->status === 'available')
-                            <span class="rounded-full bg-green-100 px-4 py-1 text-lg font-semibold text-green-700">
-                                Available
-                            </span>
-                        @else
-                            <span class="rounded-full bg-yellow-100 px-4 py-1 text-lg font-semibold text-yellow-700">
-                                Borrowed
-                            </span>
-                        @endif
-                    </div>
+                    @if($book->status === 'available')
+                        <span class="rounded-full bg-[#D1FAE5] px-4 py-1 text-sm font-bold text-[#065F46]">
+                            Available
+                        </span>
+                    @else
+                        <span class="rounded-full bg-[#FEF3C7] px-4 py-1 text-sm font-bold text-[#92400E]">
+                            Borrowed
+                        </span>
+                    @endif
                 </div>
 
-                <div class="mt-8 space-y-5 text-slate-800">
-                    <div class="grid gap-3 sm:grid-cols-[140px_minmax(0,1fr)]">
-                        <p class="text-2xl font-semibold">ISBN</p>
-                        <p class="text-2xl">{{ $book->isbn ?: '-' }}</p>
+                <div class="mt-8 space-y-4">
+                    <div class="grid grid-cols-[100px_1fr] items-center gap-4">
+                        <span class="text-base font-bold text-slate-900 uppercase tracking-tight">Isbn</span>
+                        <span class="text-base text-slate-600 font-medium">{{ $book->isbn ?: 'N/A' }}</span>
                     </div>
 
-                    <div class="grid gap-3 sm:grid-cols-[140px_minmax(0,1fr)]">
-                        <p class="text-2xl font-semibold">Authors</p>
-                        <div class="flex flex-wrap gap-3">
-                            @forelse($book->authors as $author)
-                                <span class="rounded-full bg-amber-100 px-4 py-1 text-xl font-medium text-amber-800">
+                    <div class="grid grid-cols-[100px_1fr] items-center gap-4">
+                        <span class="text-base font-bold text-slate-900 uppercase tracking-tight">Authors</span>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($book->authors as $author)
+                                <span class="rounded-full bg-[#FEF3C7] px-4 py-1 text-sm font-bold text-[#92400E]">
                                     {{ $author->name }}
                                 </span>
-                            @empty
-                                <span class="text-2xl">-</span>
-                            @endforelse
+                            @endforeach
                         </div>
                     </div>
 
-                    <div class="grid gap-3 sm:grid-cols-[140px_minmax(0,1fr)]">
-                        <p class="text-2xl font-semibold">Categories</p>
-                        <div class="flex flex-wrap gap-3">
-                            @forelse($book->categories as $category)
-                                <span class="rounded-full bg-blue-100 px-4 py-1 text-xl font-medium text-blue-800">
+                    <div class="grid grid-cols-[100px_1fr] items-center gap-4">
+                        <span class="text-base font-bold text-slate-900 uppercase tracking-tight">Categories</span>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($book->categories as $category)
+                                <span class="rounded-full bg-[#DBEAFE] px-4 py-1 text-sm font-bold text-[#1E40AF]">
                                     {{ $category->name }}
                                 </span>
-                            @empty
-                                <span class="text-2xl">-</span>
-                            @endforelse
+                            @endforeach
                         </div>
                     </div>
 
-                    <div class="grid gap-3 sm:grid-cols-[140px_minmax(0,1fr)]">
-                        <p class="text-2xl font-semibold">Publisher</p>
-                        <p class="text-2xl">{{ $book->publisher?->name ?? '-' }}</p>
+                    <div class="grid grid-cols-[100px_1fr] items-center gap-4">
+                        <span class="text-base font-bold text-slate-900 uppercase tracking-tight">Publisher</span>
+                        <span class="text-base text-slate-600 font-medium">{{ $book->publisher?->name ?: '-' }}</span>
                     </div>
                 </div>
 
-                <div class="mt-8 border-t border-gray-200 pt-6">
-                    <h2 class="text-2xl font-semibold text-slate-800">Description</h2>
-                    <p class="mt-3 text-xl leading-relaxed text-slate-700">
-                        {{ $book->description ?: 'No description available.' }}
+                <div class="my-8 h-px w-full bg-slate-100"></div>
+
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 uppercase tracking-tight">Description</h2>
+                    <p class="mt-2 text-base leading-relaxed text-slate-500">
+                        {{ $book->description ?: 'No description available for this book.' }}
                     </p>
                 </div>
             </div>
