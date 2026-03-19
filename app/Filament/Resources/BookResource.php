@@ -12,9 +12,11 @@ use Filament\Tables\Table;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use App\Filament\Resources\BookResource\RelationManagers;
+
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
+
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
