@@ -17,7 +17,6 @@ class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
 
-
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationLabel = 'Books';
@@ -28,56 +27,54 @@ class BookResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('cover_image')
-                    ->image()
-                    ->directory('book-covers')
-                    ->disk('public'),
+                Forms\Components\Section::make('Book Information')
+                    ->description('Enter the primary details for this book.')
+                    ->schema([
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->image()
+                            ->directory('book-covers')
+                            ->disk('public')
+                            ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('title')
-                    ->required(),
-
-                Forms\Components\MultiSelect::make('authors')
-                    ->relationship('authors', 'name')
-                    ->label('Authors')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-
-                Forms\Components\MultiSelect::make('categories')
-                    ->relationship('categories', 'name')
-                    ->label('Categories')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-
-                Forms\Components\Select::make('publisher_id')
-                    ->relationship('publisher', 'name')
-                    ->label('Publisher')
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                    ])
-                    ->editOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                    ])
-                    ->required(),
 
-                Forms\Components\TextInput::make('isbn'),
+                        Forms\Components\TextInput::make('isbn')
+                            ->label('ISBN'),
 
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
+                        Forms\Components\MultiSelect::make('authors')
+                            ->relationship('authors', 'name')
+                            ->label('Authors')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
 
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'available' => 'Available',
-                        'borrowed' => 'Borrowed',
-                    ])
-                    ->default('available'),
+                        Forms\Components\MultiSelect::make('categories')
+                            ->relationship('categories', 'name')
+                            ->label('Categories')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
+                        Forms\Components\Select::make('publisher_id')
+                            ->relationship('publisher', 'name')
+                            ->label('Publisher')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
+                        Forms\Components\Select::make('status')
+                            ->options([
+                                'available' => 'Available',
+                                'borrowed' => 'Borrowed',
+                            ])
+                            ->default('available')
+                            ->required(),
+
+                        Forms\Components\Textarea::make('description')
+                            ->columnSpanFull(),
+                    ])->columns(2),
             ]);
     }
 
@@ -91,18 +88,21 @@ class BookResource extends Resource
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Book Title')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('publisher.name')
                     ->label('Publisher'),
 
                 Tables\Columns\TextColumn::make('authors.name')
                     ->label('Authors')
-                    ->badge(),
+                    ->badge()
+                    ->color('info'),
 
                 Tables\Columns\TextColumn::make('categories.name')
                     ->label('Categories')
-                    ->badge(),
+                    ->badge()
+                    ->color('warning'),
 
                 Tables\Columns\TextColumn::make('isbn')
                     ->label('ISBN')
@@ -110,7 +110,14 @@ class BookResource extends Resource
 
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->label('Status'),
+                    ->color(fn(string $state): string => match ($state) {
+                        'available' => 'success',
+                        'borrowed' => 'danger',
+                        default => 'gray',
+                    }),
+            ])
+            ->filters([
+                //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -118,7 +125,9 @@ class BookResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -152,7 +161,8 @@ class BookResource extends Resource
                     ->columnSpanFull(),
 
                 Infolists\Components\TextEntry::make('status')
-                    ->label('Status'),
+                    ->label('Status')
+                    ->badge(),
             ]);
     }
 
