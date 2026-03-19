@@ -30,4 +30,10 @@ class UserDashboardController extends Controller
 
         return view('dashboard', compact('books', 'search'));
     }
+    public function show(Book $book)
+    {
+        $book->load(['authors', 'publisher', 'categories']);
+
+        return view('books.show', compact('book'));
+    }
 }

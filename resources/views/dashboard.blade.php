@@ -22,7 +22,7 @@
     @else
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             @foreach($books as $book)
-                <div class="rounded-xl bg-white p-4 shadow-sm border border-gray-200">
+                <a href="{{ route('books.show', $book) }}" class="block rounded-xl bg-white p-4 shadow-sm border border-gray-200 transition hover:-translate-y-1 hover:shadow-md">
                     <div class="h-48 flex items-center justify-center rounded-lg bg-gray-100 mb-4 overflow-hidden">
                         @if($book->cover_image)
                             <img src="{{ asset('storage/' . $book->cover_image) }}"
@@ -35,17 +35,17 @@
 
                     <h2 class="font-semibold text-lg line-clamp-2">{{ $book->title }}</h2>
 
-                    @if($book->author)
-    <p class="text-sm text-gray-700 mt-1">{{ $book->author->name }}</p>
-@endif
+                    @if($book->authors->isNotEmpty())
+                        <p class="text-sm text-gray-700 mt-1">{{ $book->authors->pluck('name')->join(', ') }}</p>
+                    @endif
 
-@if($book->publisher)
-    <p class="text-sm text-gray-600">{{ $book->publisher->name }}</p>
-@endif
+                    @if($book->publisher)
+                        <p class="text-sm text-gray-600">{{ $book->publisher->name }}</p>
+                    @endif
 
-@if($book->category)
-    <p class="text-sm text-gray-500">{{ $book->category->name }}</p>
-@endif
+                    @if($book->categories->isNotEmpty())
+                        <p class="text-sm text-gray-500">{{ $book->categories->pluck('name')->join(', ') }}</p>
+                    @endif
 
                     <div class="mt-3">
                         @if($book->status === 'available')
@@ -58,7 +58,7 @@
                             </span>
                         @endif
                     </div>
-                </div>
+                </a>
             @endforeach
         </div>
     @endif
