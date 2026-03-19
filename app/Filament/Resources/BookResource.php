@@ -159,6 +159,7 @@ class BookResource extends Resource
         return [
             RelationManagers\AuthorRelationManager::class,
             RelationManagers\CategoryRelationManager::class,
+            RelationManagers\PublisherRelationManager::class,
         ];
     }
 
