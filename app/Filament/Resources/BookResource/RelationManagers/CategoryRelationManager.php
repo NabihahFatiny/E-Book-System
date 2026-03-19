@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class CategoryRelationManager extends RelationManager
 {
-    protected static string $relationship = 'category';
+    protected static string $relationship = 'categories';
 
     public function form(Form $form): Form
     {

@@ -17,18 +17,18 @@ class Book extends Model
         'status',
     ];
 
-    public function author()
+    public function authors()
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsToMany(Author::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
     }
 }

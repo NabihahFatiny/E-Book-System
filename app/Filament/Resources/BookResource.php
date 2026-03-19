@@ -9,12 +9,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-
 use App\Filament\Resources\BookResource\RelationManagers;
-
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
@@ -31,33 +28,53 @@ class BookResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('cover_image')
                     ->image()
-                    ->directory('book-covers'),
+                    ->directory('book-covers')
+                    ->disk('public'),
+
                 Forms\Components\TextInput::make('title')
                     ->required(),
 
-                // This creates the dropdown linked to your Author table
-                Forms\Components\Select::make('author_id')
-                    ->relationship('author', 'name') // 'author' is the model relation, 'name' is the column to show
+                Forms\Components\MultiSelect::make('authors')
+                    ->relationship('authors', 'name')
+                    ->label('Authors')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+
+                Forms\Components\MultiSelect::make('categories')
+                    ->relationship('categories', 'name')
+                    ->label('Categories')
                     ->searchable()
                     ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('publisher_id')
                     ->relationship('publisher', 'name')
+                    ->label('Publisher')
                     ->searchable()
                     ->preload()
-                    ->required(),
-
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->searchable()
-                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                    ])
+                    ->editOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                    ])
                     ->required(),
 
                 Forms\Components\TextInput::make('isbn'),
-                Forms\Components\Textarea::make('description')->columnSpanFull(),
+
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
+
                 Forms\Components\Select::make('status')
-                    ->options(['available' => 'Available', 'borrowed' => 'Borrowed'])
+                    ->options([
+                        'available' => 'Available',
+                        'borrowed' => 'Borrowed',
+                    ])
                     ->default('available'),
             ]);
     }
@@ -74,17 +91,16 @@ class BookResource extends Resource
                     ->label('Book Title')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('author.name')
-                    ->label('Author')
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('publisher.name')
-                    ->label('Publisher')
-                    ->searchable(),
+                    ->label('Publisher'),
 
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('authors.name')
+                    ->label('Authors')
+                    ->badge(),
+
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->label('Categories')
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('isbn')
                     ->label('ISBN')
@@ -104,7 +120,6 @@ class BookResource extends Resource
             ]);
     }
 
-
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -116,14 +131,16 @@ class BookResource extends Resource
                 Infolists\Components\TextEntry::make('title')
                     ->label('Book Title'),
 
-                Infolists\Components\TextEntry::make('author.name')
-                    ->label('Author'),
+                Infolists\Components\TextEntry::make('authors.name')
+                    ->label('Authors')
+                    ->badge(),
 
                 Infolists\Components\TextEntry::make('publisher.name')
                     ->label('Publisher'),
 
-                Infolists\Components\TextEntry::make('category.name')
-                    ->label('Category'),
+                Infolists\Components\TextEntry::make('categories.name')
+                    ->label('Categories')
+                    ->badge(),
 
                 Infolists\Components\TextEntry::make('isbn')
                     ->label('ISBN'),
@@ -141,7 +158,6 @@ class BookResource extends Resource
     {
         return [
             RelationManagers\AuthorRelationManager::class,
-            RelationManagers\PublisherRelationManager::class,
             RelationManagers\CategoryRelationManager::class,
         ];
     }

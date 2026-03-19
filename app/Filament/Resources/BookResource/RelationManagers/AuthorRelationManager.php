@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class AuthorRelationManager extends RelationManager
 {
-    protected static string $relationship = 'author';
+    protected static string $relationship = 'authors';
 
     public function form(Form $form): Form
     {
