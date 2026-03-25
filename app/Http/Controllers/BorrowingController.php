@@ -27,6 +27,16 @@ class BorrowingController extends Controller
     {
         $user = Auth::user();
 
+        // A user may only keep 2 active borrowings at the same time.
+        $activeBorrowingsCount = Borrowing::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->count();
+
+        if ($activeBorrowingsCount >= 2) {
+            return redirect()->route('books.show', $book)
+                ->with('error', 'You can only borrow 2 books at one time. Please return a book first.');
+        }
+
         $existingBorrowing = Borrowing::where('user_id', $user->id)
             ->where('book_id', $book->id)
             ->where('status', 'active')
