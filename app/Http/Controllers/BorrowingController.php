@@ -70,4 +70,29 @@ class BorrowingController extends Controller
         return redirect()->route('books.show', $book)
             ->with('success', 'You can read this book now.');
     }
+    public function return(Borrowing $borrowing)
+    {
+        if ($borrowing->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($borrowing->status === 'returned') {
+            return redirect()->route('my.borrowings')
+                ->with('error', 'This book has already been returned.');
+        }
+
+        $borrowing->update([
+            'status' => 'returned',
+            'returned_at' => now(),
+        ]);
+
+        if (! $borrowing->book->borrowings()->where('status', 'active')->exists()) {
+            $borrowing->book->update([
+                'status' => 'available',
+            ]);
+        }
+
+        return redirect()->route('my.borrowings')
+            ->with('success', 'Book returned successfully.');
+    }
 }

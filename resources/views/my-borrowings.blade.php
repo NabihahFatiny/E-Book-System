@@ -3,6 +3,18 @@
 @section('content')
     <h1 class="mb-6 text-3xl font-bold text-slate-900">My Borrowings</h1>
 
+    @if(session('success'))
+        <div class="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="mb-4 rounded-xl bg-red-100 px-4 py-3 text-red-700">
+            {{ session('error') }}
+        </div>
+    @endif
+
     @if($borrowings->isEmpty())
         <div class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-slate-600">
             You have not borrowed any books yet.
@@ -34,8 +46,26 @@
                             <span class="inline-block rounded-full px-3 py-1 font-semibold {{ $borrowing->status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700' }}">
                                 {{ ucfirst($borrowing->status) }}
                             </span>
+
                             <p class="mt-3">Borrowed: {{ $borrowing->borrowed_at?->format('d M Y H:i') ?? 'N/A' }}</p>
                             <p class="mt-1">Due: {{ $borrowing->due_at?->format('d M Y H:i') ?? 'N/A' }}</p>
+
+                            @if($borrowing->returned_at)
+                                <p class="mt-1">Returned: {{ $borrowing->returned_at?->format('d M Y H:i') }}</p>
+                            @endif
+
+                            @if($borrowing->status === 'active')
+                                <form action="{{ route('borrowings.return', $borrowing) }}" method="POST" class="mt-3">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button
+                                        type="submit"
+                                        class="rounded-lg bg-red-500 px-4 py-2 font-semibold text-white transition hover:bg-red-600"
+                                    >
+                                        Return Book
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>

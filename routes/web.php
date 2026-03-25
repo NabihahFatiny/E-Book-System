@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/books/{book}/read', [BorrowingController::class, 'read'])->name('books.read');
 
     Route::get('/my-borrowings', [BorrowingController::class, 'index'])->name('my.borrowings');
+
+    Route::patch('/my-borrowings/{borrowing}/return', [BorrowingController::class, 'return'])->name('borrowings.return');
 });
 
 require __DIR__ . '/auth.php';
