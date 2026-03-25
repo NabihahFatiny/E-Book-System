@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\WatchlistController;
+use App\Http\Controllers\NotificationController;
+
 
 
 Route::redirect('/', '/login');
@@ -21,11 +23,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/books/{book}/borrow', [BorrowingController::class, 'store'])->name('borrowings.store');
     Route::get('/books/{book}/read', [BorrowingController::class, 'read'])->name('books.read');
-    Route::post('/books/{book}/watch', [WatchlistController::class, 'store'])->name('watchlist.store');
 
     Route::get('/my-borrowings', [BorrowingController::class, 'index'])->name('my.borrowings');
 
     Route::patch('/my-borrowings/{borrowing}/return', [BorrowingController::class, 'return'])->name('borrowings.return');
+
+    Route::get('/my-watchlist', [WatchlistController::class, 'index'])->name('my.watchlist');
+    Route::post('/books/{book}/watchlist', [WatchlistController::class, 'store'])->name('watchlist.store');
+    Route::delete('/watchlist/{watchlist}', [WatchlistController::class, 'destroy'])->name('watchlist.destroy');
+
+    Route::get('/my-notifications', [NotificationController::class, 'index'])->name('my.notifications');
+    Route::patch('/my-notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 });
 
 require __DIR__ . '/auth.php';

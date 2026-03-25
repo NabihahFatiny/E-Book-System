@@ -22,6 +22,18 @@
                    class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.borrowings') ? 'bg-slate-700' : '' }}">
                     My Borrowings
                 </a>
+
+
+                <a href="{{ route('my.watchlist') }}"
+   class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.watchlist') ? 'bg-slate-700' : '' }}">
+    My Watchlist
+</a>
+
+<a href="{{ route('my.notifications') }}"
+   class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.notifications') ? 'bg-slate-700' : '' }}">
+    My Notifications
+</a>
+
     <form method="POST" action="{{ route('logout') }}" class="mt-6">
     @csrf
     <button type="submit"

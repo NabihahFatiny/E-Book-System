@@ -61,6 +61,7 @@ class BorrowingController extends Controller
     }
 
 
+
     public function read(Book $book)
     {
         $activeBorrowing = Borrowing::where('user_id', Auth::id())
