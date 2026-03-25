@@ -41,4 +41,9 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
+
+    public function borrowings()
+    {
+        return $this->hasMany(Borrowing::class);
+    }
 }
