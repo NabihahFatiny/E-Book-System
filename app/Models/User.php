@@ -14,6 +14,7 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
+    // Only admin users are allowed to log in to the Filament admin panel.
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->role === 'admin';
@@ -43,11 +44,13 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    // A user can have many borrowing records.
     public function borrowings()
     {
         return $this->hasMany(Borrowing::class);
     }
 
+    // A user can watch many books through the watchlists table.
     public function watchlists()
     {
         return $this->hasMany(Watchlist::class);

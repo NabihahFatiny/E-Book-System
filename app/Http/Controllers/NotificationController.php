@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    // Shows all notifications that belong to the currently logged-in user.
     public function index()
     {
         /** @var User|null $user */
@@ -23,6 +24,7 @@ class NotificationController extends Controller
         return view('notifications.index', compact('notifications'));
     }
 
+    // Marks one notification as read, but only if it belongs to the logged-in user.
     public function markAsRead(DatabaseNotification $notification)
     {
         if ($notification->notifiable_id !== Auth::id()) {

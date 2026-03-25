@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
+        <!-- Sidebar navigation for normal users. -->
         <aside class="w-64 bg-slate-900 text-white p-6">
             <h2 class="text-xl font-bold mb-6">USER</h2>
 
@@ -23,28 +23,30 @@
                     My Borrowings
                 </a>
 
-
+                <!-- Watchlist page: books the user is waiting for. -->
                 <a href="{{ route('my.watchlist') }}"
-   class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.watchlist') ? 'bg-slate-700' : '' }}">
-    My Watchlist
-</a>
+                   class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.watchlist') ? 'bg-slate-700' : '' }}">
+                    My Watchlist
+                </a>
 
-<a href="{{ route('my.notifications') }}"
-   class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.notifications') ? 'bg-slate-700' : '' }}">
-    My Notifications
-</a>
+                <!-- Notifications page: messages such as a watched book becoming available. -->
+                <a href="{{ route('my.notifications') }}"
+                   class="block px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('my.notifications') ? 'bg-slate-700' : '' }}">
+                    My Notifications
+                </a>
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-6">
-    @csrf
-    <button type="submit"
-        class="block w-full rounded-lg px-4 py-3 text-left text-white hover:bg-slate-700">
-        Logout
-    </button>
-</form>
+                <!-- Logout button for ending the user session. -->
+                <form method="POST" action="{{ route('logout') }}" class="mt-6">
+                    @csrf
+                    <button type="submit"
+                        class="block w-full rounded-lg px-4 py-3 text-left text-white hover:bg-slate-700">
+                        Logout
+                    </button>
+                </form>
             </nav>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Every page that extends this layout will appear here. -->
         <main class="flex-1 p-6">
             @yield('content')
         </main>
