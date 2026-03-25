@@ -11,6 +11,7 @@ use App\Notifications\BookAvailableNotification;
 
 class BorrowingController extends Controller
 {
+    // Shows the logged-in user's borrowing history page.
     public function index()
     {
         $borrowings = Borrowing::with(['book.authors', 'book.publisher'])
@@ -21,6 +22,7 @@ class BorrowingController extends Controller
         return view('my-borrowings', compact('borrowings'));
     }
 
+    // Creates a borrowing record only if the same book is not already borrowed.
     public function store(Book $book)
     {
         $user = Auth::user();
@@ -62,6 +64,7 @@ class BorrowingController extends Controller
 
 
 
+    // The current project uses the book page as the "read" destination after access is verified.
     public function read(Book $book)
     {
         $activeBorrowing = Borrowing::where('user_id', Auth::id())
@@ -77,6 +80,7 @@ class BorrowingController extends Controller
         return redirect()->route('books.show', $book)
             ->with('success', 'You can read this book now.');
     }
+    // Returns a book, makes it available again, and notifies watchlist users.
     public function return(Borrowing $borrowing)
     {
         if ($borrowing->user_id !== Auth::id()) {
@@ -104,6 +108,7 @@ class BorrowingController extends Controller
                 'status' => 'available',
             ]);
 
+            // Everyone waiting for this book gets a database notification.
             $watchlistUsers = $book->watchlists()
                 ->with('user')
                 ->get()

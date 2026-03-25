@@ -1,6 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
+    {{-- Page that shows database notifications for the logged-in user. --}}
     <h1 class="mb-6 text-3xl font-bold text-slate-900">My Notifications</h1>
 
     @if(session('success'))
@@ -35,6 +36,7 @@
                         </div>
 
                         <div class="md:text-right">
+                            {{-- Unread notifications can be marked as read from this page. --}}
                             @if(!$notification->read_at)
                                 <form action="{{ route('notifications.read', $notification->id) }}" method="POST">
                                     @csrf

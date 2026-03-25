@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Borrowing extends Model
 {
+    // These are the borrowing fields allowed in create/update operations.
     protected $fillable = [
         'user_id',
         'book_id',
@@ -22,16 +23,19 @@ class Borrowing extends Model
         'returned_at' => 'datetime',
     ];
 
+    // Each borrowing record belongs to one user.
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    // Each borrowing record belongs to one book.
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }
 
+    // Small helper for checking whether the borrowing has been returned already.
     public function isReturned(): bool
     {
         return $this->status === 'returned';

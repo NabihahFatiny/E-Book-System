@@ -1,6 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
+    {{-- Page that shows books the user wants to borrow later. --}}
     <h1 class="mb-6 text-3xl font-bold text-slate-900">My Watchlist</h1>
 
     @if(session('success'))

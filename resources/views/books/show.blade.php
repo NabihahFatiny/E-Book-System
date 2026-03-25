@@ -2,6 +2,7 @@
 
 @section('content')
 
+    {{-- Flash messages shown after actions like borrow, watchlist, or return. --}}
     @if(session('success'))
         <div class="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
             {{ session('success') }}
@@ -41,38 +42,39 @@
                     @endif
                 </div>
 
-<div class="mt-6">
-    @if($canRead)
-        <a
-            href="{{ route('books.read', $book) }}"
-            class="block w-full rounded-xl bg-slate-900 px-6 py-3 text-center text-lg font-bold text-white shadow-lg shadow-slate-200 transition-all hover:bg-slate-800"
-        >
-            Read Now
-        </a>
-    @elseif($canBorrow)
-        <form action="{{ route('borrowings.store', $book) }}" method="POST">
-            @csrf
-            <button type="submit" class="w-full rounded-xl bg-[#E85D33] px-6 py-3 text-lg font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 active:scale-95">
-                Borrow to Read
-            </button>
-        </form>
-    @elseif($isInWatchlist)
-        <button
-            type="button"
-            disabled
-            class="w-full cursor-not-allowed rounded-xl bg-slate-300 px-6 py-3 text-lg font-bold text-slate-600"
-        >
-            Already In Watchlist
-        </button>
-    @else
-        <form action="{{ route('watchlist.store', $book) }}" method="POST">
-            @csrf
-            <button type="submit" class="w-full rounded-xl bg-blue-600 px-6 py-3 text-lg font-bold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-95">
-                Add to Watchlist
-            </button>
-        </form>
-    @endif
-</div>
+                {{-- The button changes based on whether the user can read, borrow, or only watch the book. --}}
+                <div class="mt-6">
+                    @if($canRead)
+                        <a
+                            href="{{ route('books.read', $book) }}"
+                            class="block w-full rounded-xl bg-slate-900 px-6 py-3 text-center text-lg font-bold text-white shadow-lg shadow-slate-200 transition-all hover:bg-slate-800"
+                        >
+                            Read Now
+                        </a>
+                    @elseif($canBorrow)
+                        <form action="{{ route('borrowings.store', $book) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full rounded-xl bg-[#E85D33] px-6 py-3 text-lg font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 active:scale-95">
+                                Borrow to Read
+                            </button>
+                        </form>
+                    @elseif($isInWatchlist)
+                        <button
+                            type="button"
+                            disabled
+                            class="w-full cursor-not-allowed rounded-xl bg-slate-300 px-6 py-3 text-lg font-bold text-slate-600"
+                        >
+                            Already In Watchlist
+                        </button>
+                    @else
+                        <form action="{{ route('watchlist.store', $book) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full rounded-xl bg-blue-600 px-6 py-3 text-lg font-bold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-95">
+                                Add to Watchlist
+                            </button>
+                        </form>
+                    @endif
+                </div>
 
 
             </div>
@@ -130,6 +132,7 @@
 
                 <div class="my-8 h-px w-full bg-slate-100"></div>
 
+                {{-- Extra info for the current user when they are the active borrower. --}}
                 @if($activeBorrowing)
                     <div class="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-emerald-800">
                         <p class="font-semibold">Your borrowing is active.</p>

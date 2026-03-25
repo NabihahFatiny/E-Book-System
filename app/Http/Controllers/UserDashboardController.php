@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class UserDashboardController extends Controller
 {
+    // Loads the dashboard list and applies search/filter values from the request.
     public function index(Request $request)
     {
         $search = $request->search;
@@ -46,6 +47,7 @@ class UserDashboardController extends Controller
         return view('dashboard', compact('books', 'search', 'categories', 'authors', 'publishers'));
     }
 
+    // Builds the flags used by the book detail page to decide which button to show.
     public function show(Request $request, Book $book)
     {
         $book->load(['authors', 'publisher', 'categories']);

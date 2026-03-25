@@ -1,6 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
+    {{-- Page that lists the logged-in user's borrowing records. --}}
     <h1 class="mb-6 text-3xl font-bold text-slate-900">My Borrowings</h1>
 
     @if(session('success'))
@@ -54,6 +55,7 @@
                                 <p class="mt-1">Returned: {{ $borrowing->returned_at?->format('d M Y H:i') }}</p>
                             @endif
 
+                            {{-- Only active borrowings can still be returned by the user. --}}
                             @if($borrowing->status === 'active')
                                 <form action="{{ route('borrowings.return', $borrowing) }}" method="POST" class="mt-3">
                                     @csrf
