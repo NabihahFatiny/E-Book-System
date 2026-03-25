@@ -35,4 +35,8 @@ class Book extends Model
     {
         return $this->hasMany(Borrowing::class);
     }
+    public function watchlists()
+    {
+        return $this->hasMany(Watchlist::class);
+    }
 }

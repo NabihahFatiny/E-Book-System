@@ -41,31 +41,39 @@
                     @endif
                 </div>
 
-                <div class="mt-6">
-                    @if($canRead)
-                        <a
-                            href="{{ route('books.read', $book) }}"
-                            class="block w-full rounded-xl bg-slate-900 px-6 py-3 text-center text-lg font-bold text-white shadow-lg shadow-slate-200 transition-all hover:bg-slate-800"
-                        >
-                            Read Now
-                        </a>
-                    @elseif($canBorrow)
-                        <form action="{{ route('borrowings.store', $book) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="w-full rounded-xl bg-[#E85D33] px-6 py-3 text-lg font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 active:scale-95">
-                                Borrow to Read
-                            </button>
-                        </form>
-                    @else
-                        <button
-                            type="button"
-                            disabled
-                            class="w-full cursor-not-allowed rounded-xl bg-slate-300 px-6 py-3 text-lg font-bold text-slate-600"
-                        >
-                            Currently Unavailable
-                        </button>
-                    @endif
-                </div>
+<div class="mt-6">
+    @if($canRead)
+        <a
+            href="{{ route('books.read', $book) }}"
+            class="block w-full rounded-xl bg-slate-900 px-6 py-3 text-center text-lg font-bold text-white shadow-lg shadow-slate-200 transition-all hover:bg-slate-800"
+        >
+            Read Now
+        </a>
+    @elseif($canBorrow)
+        <form action="{{ route('borrowings.store', $book) }}" method="POST">
+            @csrf
+            <button type="submit" class="w-full rounded-xl bg-[#E85D33] px-6 py-3 text-lg font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 active:scale-95">
+                Borrow to Read
+            </button>
+        </form>
+    @elseif($isInWatchlist)
+        <button
+            type="button"
+            disabled
+            class="w-full cursor-not-allowed rounded-xl bg-slate-300 px-6 py-3 text-lg font-bold text-slate-600"
+        >
+            Already In Watchlist
+        </button>
+    @else
+        <form action="{{ route('watchlist.store', $book) }}" method="POST">
+            @csrf
+            <button type="submit" class="w-full rounded-xl bg-blue-600 px-6 py-3 text-lg font-bold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-95">
+                Add to Watchlist
+            </button>
+        </form>
+    @endif
+</div>
+
             </div>
 
             <div class="flex flex-col">

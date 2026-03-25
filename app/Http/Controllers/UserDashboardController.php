@@ -22,16 +22,16 @@ class UserDashboardController extends Controller
                 $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', '%' . $search . '%')
                         ->orWhere('isbn', 'like', '%' . $search . '%')
-                        ->orWhereHas('authors', fn ($inner) => $inner->where('name', 'like', '%' . $search . '%'))
-                        ->orWhereHas('publisher', fn ($inner) => $inner->where('name', 'like', '%' . $search . '%'))
-                        ->orWhereHas('categories', fn ($inner) => $inner->where('name', 'like', '%' . $search . '%'));
+                        ->orWhereHas('authors', fn($inner) => $inner->where('name', 'like', '%' . $search . '%'))
+                        ->orWhereHas('publisher', fn($inner) => $inner->where('name', 'like', '%' . $search . '%'))
+                        ->orWhereHas('categories', fn($inner) => $inner->where('name', 'like', '%' . $search . '%'));
                 });
             })
             ->when($categoryFilter, function ($query) use ($categoryFilter) {
-                $query->whereHas('categories', fn ($q) => $q->where('categories.id', $categoryFilter));
+                $query->whereHas('categories', fn($q) => $q->where('categories.id', $categoryFilter));
             })
             ->when($authorFilter, function ($query) use ($authorFilter) {
-                $query->whereHas('authors', fn ($q) => $q->where('authors.id', $authorFilter));
+                $query->whereHas('authors', fn($q) => $q->where('authors.id', $authorFilter));
             })
             ->when($publisherFilter, function ($query) use ($publisherFilter) {
                 $query->where('publisher_id', $publisherFilter);
@@ -60,9 +60,20 @@ class UserDashboardController extends Controller
             ->where('status', 'active')
             ->exists();
 
+        $isInWatchlist = $request->user()
+            ->watchlists()
+            ->where('book_id', $book->id)
+            ->exists();
+
         $canRead = (bool) $activeBorrowing;
         $canBorrow = ! $bookHasActiveBorrower;
 
-        return view('books.show', compact('book', 'activeBorrowing', 'canRead', 'canBorrow'));
+        return view('books.show', compact(
+            'book',
+            'activeBorrowing',
+            'canRead',
+            'canBorrow',
+            'isInWatchlist'
+        ));
     }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Borrowing;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Watchlist;
+use App\Notifications\BookAvailableNotification;
+
 
 class BorrowingController extends Controller
 {
@@ -22,15 +25,6 @@ class BorrowingController extends Controller
     {
         $user = Auth::user();
 
-        $activeBorrowingsCount = Borrowing::where('user_id', $user->id)
-            ->where('status', 'active')
-            ->count();
-
-        if ($activeBorrowingsCount >= 2) {
-            return redirect()->route('books.show', $book)
-                ->with('error', 'You can only borrow 2 books at one time. Please return a book first.');
-        }
-
         $existingBorrowing = Borrowing::where('user_id', $user->id)
             ->where('book_id', $book->id)
             ->where('status', 'active')
@@ -38,7 +32,7 @@ class BorrowingController extends Controller
 
         if ($existingBorrowing) {
             return redirect()->route('books.read', $book)
-                ->with('success', 'You already have access to this book.');
+                ->with('success', 'You already borrowed this book.');
         }
 
         $bookBorrowedByAnotherUser = Borrowing::where('book_id', $book->id)
@@ -47,7 +41,7 @@ class BorrowingController extends Controller
 
         if ($bookBorrowedByAnotherUser) {
             return redirect()->route('books.show', $book)
-                ->with('error', 'This book is currently borrowed by another user.');
+                ->with('error', 'This book is currently borrowed. You can add it to your watchlist.');
         }
 
         Borrowing::create([
@@ -58,11 +52,14 @@ class BorrowingController extends Controller
             'status' => 'active',
         ]);
 
-        $book->update(['status' => 'borrowed']);
+        $book->update([
+            'status' => 'borrowed',
+        ]);
 
         return redirect()->route('books.read', $book)
             ->with('success', 'Book borrowed successfully.');
     }
+
 
     public function read(Book $book)
     {
@@ -95,10 +92,28 @@ class BorrowingController extends Controller
             'returned_at' => now(),
         ]);
 
-        if (! $borrowing->book->borrowings()->where('status', 'active')->exists()) {
-            $borrowing->book->update([
+        $book = $borrowing->book;
+
+        $hasActiveBorrowing = $book->borrowings()
+            ->where('status', 'active')
+            ->exists();
+
+        if (! $hasActiveBorrowing) {
+            $book->update([
                 'status' => 'available',
             ]);
+
+            $watchlistUsers = $book->watchlists()
+                ->with('user')
+                ->get()
+                ->pluck('user')
+                ->filter();
+
+            foreach ($watchlistUsers as $watchlistUser) {
+                $watchlistUser->notify(new BookAvailableNotification($book));
+            }
+
+            Watchlist::where('book_id', $book->id)->delete();
         }
 
         return redirect()->route('my.borrowings')
