@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('watchlists', function (Blueprint $table) {
-            $table->id();
+            $table->id(); //who added the book to watchlist and which book
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('book_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamps(); //when the book was added to watchlist
         });
     }
 

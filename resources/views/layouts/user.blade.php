@@ -11,8 +11,7 @@
         <!-- Sidebar navigation for normal users. -->
         <aside class="w-64 bg-slate-900 text-white p-6">
             <h2 class="text-xl font-bold mb-6">USER</h2>
-
-            <nav class="space-y-2">
+<nav class="space-y-2">
     <a href="{{ route('dashboard') }}"
        class="flex items-center gap-3 px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('dashboard') ? 'bg-slate-700' : '' }}">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -47,7 +46,19 @@
         Notifications
     </a>
 </nav>
+
+ <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit"
+        class="flex items-center gap-3 w-full px-4 py-2 rounded text-left hover:bg-slate-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+    </button>
+</form>
         </aside>
+
 
         <!-- Every page that extends this layout will appear here. -->
         <main class="flex-1 p-6">

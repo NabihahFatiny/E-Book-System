@@ -7,6 +7,8 @@ use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\WatchlistController;
 use App\Http\Controllers\NotificationController;
 
+// Routes decide which controller method should run.
+
 Route::redirect('/', '/login');
 
 Route::middleware('auth')->group(function () {
