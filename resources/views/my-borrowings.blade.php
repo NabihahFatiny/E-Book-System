@@ -69,6 +69,19 @@
                                 </form>
                             @endif
                         </div>
+                        @if($borrowing->status === 'returned')
+    <form action="{{ route('borrowings.destroy', $borrowing) }}" method="POST" class="mt-3">
+        @csrf
+        @method('DELETE')
+        <button
+            type="submit"
+            class="rounded-lg bg-slate-700 px-4 py-2 font-semibold text-white transition hover:bg-slate-800"
+        >
+            Delete History
+        </button>
+    </form>
+@endif
+
                     </div>
                 </div>
             @endforeach

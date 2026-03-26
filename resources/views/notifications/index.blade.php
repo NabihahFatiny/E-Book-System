@@ -54,6 +54,17 @@
                                 </span>
                             @endif
                         </div>
+                        <form action="{{ route('notifications.destroy', $notification->id) }}" method="POST" class="mt-3">
+    @csrf
+    @method('DELETE')
+    <button
+        type="submit"
+        class="rounded-lg bg-red-500 px-4 py-2 font-semibold text-white transition hover:bg-red-600"
+    >
+        Delete
+    </button>
+</form>
+
                     </div>
                 </div>
             @endforeach

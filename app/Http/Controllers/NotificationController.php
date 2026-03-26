@@ -36,4 +36,17 @@ class NotificationController extends Controller
         return redirect()->route('my.notifications')
             ->with('success', 'Notification marked as read.');
     }
+
+    // delete notification
+    public function destroy(DatabaseNotification $notification)
+    {
+        if ($notification->notifiable_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $notification->delete();
+
+        return redirect()->route('my.notifications')
+            ->with('success', 'Notification deleted successfully.');
+    }
 }

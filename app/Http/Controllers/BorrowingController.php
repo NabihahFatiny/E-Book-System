@@ -135,4 +135,22 @@ class BorrowingController extends Controller
         return redirect()->route('my.borrowings')
             ->with('success', 'Book returned successfully.');
     }
+
+    // untuk delete borrowing and notification history (button trash)
+    public function destroy(Borrowing $borrowing)
+    {
+        if ($borrowing->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($borrowing->status !== 'returned') {
+            return redirect()->route('my.borrowings')
+                ->with('error', 'Only returned borrowing history can be deleted.');
+        }
+
+        $borrowing->delete();
+
+        return redirect()->route('my.borrowings')
+            ->with('success', 'Borrowing history deleted successfully.');
+    }
 }

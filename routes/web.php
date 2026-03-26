@@ -39,6 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Notification pages and action to mark one notification as read.
     Route::get('/my-notifications', [NotificationController::class, 'index'])->name('my.notifications');
     Route::patch('/my-notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    // Delete trash button in user's borrowing history and notifications page, to let user permanently delete a borrowing or notification record.
+    Route::delete('/my-borrowings/{borrowing}', [BorrowingController::class, 'destroy'])->name('borrowings.destroy');
+    Route::delete('/my-notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
 
 require __DIR__ . '/auth.php';
