@@ -34,8 +34,8 @@ class RegisteredUserController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'full_name' => ['required', 'string', 'max:255'],
-            'contact_no' => ['required', 'string', 'max:20'],
-            'ic_passport' => ['required', 'string', 'max:50'],
+            'contact_no' => ['required', 'string', 'max:11', 'regex:/^\d+$/'],
+            'ic_passport' => ['required', 'string', 'max:12', 'regex:/^\d+$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 

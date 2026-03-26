@@ -22,13 +22,13 @@
 
         <div class="mt-4">
             <x-input-label for="contact_no" :value="'Contact No'" />
-            <x-text-input id="contact_no" class="block mt-1 w-full" type="text" name="contact_no" :value="old('contact_no')" required />
+            <x-text-input id="contact_no" class="block mt-1 w-full" type="text" name="contact_no" :value="old('contact_no')" maxlength="11" inputmode="numeric" pattern="[0-9]*" required />
             <x-input-error :messages="$errors->get('contact_no')" class="mt-2" />
         </div>
 
         <div class="mt-4">
             <x-input-label for="ic_passport" :value="'IC / Passport'" />
-            <x-text-input id="ic_passport" class="block mt-1 w-full" type="text" name="ic_passport" :value="old('ic_passport')" required />
+            <x-text-input id="ic_passport" class="block mt-1 w-full" type="text" name="ic_passport" :value="old('ic_passport')" maxlength="12" inputmode="numeric" pattern="[0-9]*" required />
             <x-input-error :messages="$errors->get('ic_passport')" class="mt-2" />
         </div>
 

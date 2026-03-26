@@ -50,11 +50,13 @@ class UserResource extends Resource
 
                 Forms\Components\TextInput::make('contact_no')
                     ->label('Contact No')
-                    ->maxLength(20),
+                    ->maxLength(11)
+                    ->rule('regex:/^\d+$/'),
 
                 Forms\Components\TextInput::make('ic_passport')
                     ->label('IC / Passport')
-                    ->maxLength(50),
+                    ->maxLength(12)
+                    ->rule('regex:/^\d+$/'),
 
                 Forms\Components\Select::make('role')
                     ->label('Role')

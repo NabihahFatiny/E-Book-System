@@ -41,7 +41,9 @@ class BookResource extends Resource
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('isbn')
-                            ->label('ISBN'),
+                            ->label('ISBN')
+                            ->maxLength(13)
+                            ->rule('regex:/^\d+$/'),
 
                         Forms\Components\MultiSelect::make('authors')
                             ->relationship('authors', 'name')

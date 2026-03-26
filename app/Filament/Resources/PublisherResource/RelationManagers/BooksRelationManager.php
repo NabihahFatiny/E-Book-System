@@ -40,7 +40,8 @@ class BooksRelationManager extends RelationManager
                     ->required(),
 
                 Forms\Components\TextInput::make('isbn')
-                    ->maxLength(255),
+                    ->maxLength(13)
+                    ->rule('regex:/^\d+$/'),
 
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
