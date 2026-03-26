@@ -52,16 +52,19 @@ class UserDashboardController extends Controller
     {
         $book->load(['authors', 'publisher', 'categories']);
 
+        // check if the user has an active borrowing for this book, if the book is currently borrowed by another user, and if the book is in the user's watchlist
         $activeBorrowing = $request->user()
             ->borrowings()
             ->where('book_id', $book->id)
             ->where('status', 'active')
             ->first();
 
+        // check if the book is currently borrowed by another user
         $bookHasActiveBorrower = $book->borrowings()
             ->where('status', 'active')
             ->exists();
 
+        // check if the book is in the user's watchlist
         $isInWatchlist = $request->user()
             ->watchlists()
             ->where('book_id', $book->id)

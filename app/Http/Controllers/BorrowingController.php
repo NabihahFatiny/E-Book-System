@@ -27,7 +27,7 @@ class BorrowingController extends Controller
     {
         $user = Auth::user();
 
-        // A user may only keep 2 active borrowings at the same time.
+        // A user may only keep 2 active borrowings at the same time. Boleh pinjam 2 je 
         $activeBorrowingsCount = Borrowing::where('user_id', $user->id)
             ->where('status', 'active')
             ->count();
