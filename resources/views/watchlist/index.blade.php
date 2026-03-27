@@ -34,7 +34,7 @@
                     <p class="text-sm font-semibold uppercase tracking-[0.3em] text-orange-300">Saved For Later</p>
                     <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">My Watchlist</h1>
                     <p class="mt-3 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">
-                        Keep track of books you want next, see what is already available, and jump back into any title in one tap.
+                        Keep track of books you want to read next, see what is already available, and jump back into any title in one tap.
                     </p>
                 </div>
 

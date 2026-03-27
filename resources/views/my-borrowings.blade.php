@@ -41,8 +41,7 @@
                     <p class="text-sm font-semibold uppercase tracking-[0.3em] text-orange-300">Reading Shelf</p>
                     <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">My Borrowings</h1>
                     <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
-                        A cleaner history of your borrowed books with quick actions, due times, and returned records in one compact list.
-                    </p>
+                        View and manage all the books you’ve borrowed in one place, including due dates and return status
                 </div>
 
                 <div class="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
