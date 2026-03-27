@@ -28,8 +28,11 @@ class ProfileTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->patch('/profile', [
-                'name' => 'Test User',
+                'username' => 'testuser',
                 'email' => 'test@example.com',
+                'full_name' => 'Test User',
+                'contact_no' => '0123456789',
+                'ic_passport' => 'A12345678',
             ]);
 
         $response
@@ -38,8 +41,12 @@ class ProfileTest extends TestCase
 
         $user->refresh();
 
-        $this->assertSame('Test User', $user->name);
+        $this->assertSame('testuser', $user->username);
+        $this->assertSame('testuser', $user->name);
+        $this->assertSame('Test User', $user->full_name);
         $this->assertSame('test@example.com', $user->email);
+        $this->assertSame('0123456789', $user->contact_no);
+        $this->assertSame('A12345678', $user->ic_passport);
         $this->assertNull($user->email_verified_at);
     }
 
@@ -50,8 +57,11 @@ class ProfileTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->patch('/profile', [
-                'name' => 'Test User',
+                'username' => 'sameuser',
                 'email' => $user->email,
+                'full_name' => 'Same User',
+                'contact_no' => '0198765432',
+                'ic_passport' => 'B76543210',
             ]);
 
         $response
@@ -59,6 +69,29 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->refresh()->email_verified_at);
+    }
+
+    public function test_password_can_be_updated_from_profile_page(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch('/profile', [
+                'username' => $user->username,
+                'email' => $user->email,
+                'full_name' => $user->full_name,
+                'contact_no' => $user->contact_no,
+                'ic_passport' => $user->ic_passport,
+                'password' => 'new-password',
+                'password_confirmation' => 'new-password',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/profile');
+
+        $this->assertTrue(password_verify('new-password', $user->refresh()->password));
     }
 
     public function test_user_can_delete_their_account(): void

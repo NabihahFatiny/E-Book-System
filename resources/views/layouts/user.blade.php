@@ -45,6 +45,15 @@
         </svg>
         Notifications
     </a>
+
+    <a href="{{ route('profile.edit') }}"
+       class="flex items-center gap-3 px-4 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('profile.*') ? 'bg-slate-700' : '' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21a8 8 0 1 0-16 0"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        Edit Profile
+    </a>
 </nav>
 
  <form method="POST" action="{{ route('logout') }}">
